@@ -33,3 +33,41 @@ function promptUser() {
       },
     ]);
   }
+
+async function generateLogo() {
+    try {
+      const { text, textColor, shape, shapeColor } = await promptUser();
+  
+      let logoShape;
+  
+      switch (shape) {
+        case 'Circle':
+          logoShape = new Circle();
+          break;
+        case 'Triangle':
+          logoShape = new Triangle();
+          break;
+        case 'Square':
+          logoShape = new Square();
+          break;
+      }
+  
+      logoShape.setColor(shapeColor);
+  
+      const svgContent = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200">
+          ${logoShape.render()}
+          <text x="150" y="150" text-anchor="middle" fill="${textColor}">${text}</text>
+        </svg>
+      `;
+  
+      fs.writeFileSync('logo.svg', svgContent);
+  
+      console.log('Generated logo.svg');
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  
+  generateLogo();
+  
